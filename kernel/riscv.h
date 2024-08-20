@@ -175,7 +175,9 @@ r_stvec()
 }
 
 // Supervisor Timer Comparison Register
-static inline uint64
+
+//static inline uint64
+/*
 r_stimecmp()
 {
   uint64 x;
@@ -188,9 +190,10 @@ w_stimecmp(uint64 x)
 {
   asm volatile("csrw stimecmp, %0" : : "r" (x));
 }
-
+Comentado Temporalmente ---------------------------------------------------------*/
 // Machine Environment Configuration Register
-static inline uint64
+/*static inline uint64
+
 r_menvcfg()
 {
   uint64 x;
@@ -203,7 +206,7 @@ w_menvcfg(uint64 x)
 {
   asm volatile("csrw menvcfg, %0" : : "r" (x));
 }
-
+Comentado Temporalmente ---------------------------------------------------------*/
 // Physical Memory Protection
 static inline void
 w_pmpcfg0(uint64 x)
