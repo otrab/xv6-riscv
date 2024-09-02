@@ -91,3 +91,33 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+// Getppid :
+
+uint64
+sys_getppid(void)
+{
+    struct proc *p = myproc(); // Obtener el proceso actual
+    return p->parent ? p->parent->pid : 0; // Retornar el PID del padre o 0 si no hay padre
+}
+
+// Get ancestor : 
+
+extern void argint(int, int*);
+
+uint64
+sys_getancestor(void)
+{
+    int n;
+    argint(0, &n); // Llamada a argint sin verificar el valor de retorno
+
+    struct proc *p = myproc(); // Obtener el proceso actual
+
+    for (int i = 0; i < n; i++) {
+        if (p->parent == 0) {
+            return -1; // No hay suficientes ancestros
+        }
+        p = p->parent; // Subir un nivel en la jerarquía
+    }
+
+    return p->pid; // Retornar el PID del ancestro
+}

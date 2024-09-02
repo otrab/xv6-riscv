@@ -1,3 +1,8 @@
+#ifndef USER_H
+#define USER_H
+
+#include "kernel/types.h"
+
 struct stat;
 
 // system calls
@@ -22,6 +27,8 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int getppid(void);
+int getancestor(int);
 
 // ulib.c
 int stat(const char*, struct stat*);
@@ -41,3 +48,5 @@ void *memcpy(void *, const void *, uint);
 // umalloc.c
 void* malloc(uint);
 void free(void*);
+
+#endif // USER_H
