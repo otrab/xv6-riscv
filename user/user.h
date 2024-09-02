@@ -22,6 +22,9 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int  getppid(void);
+int getancestor(int n);
+typedef unsigned int uint;
 
 // ulib.c
 int stat(const char*, struct stat*);
@@ -41,3 +44,4 @@ void *memcpy(void *, const void *, uint);
 // umalloc.c
 void* malloc(uint);
 void free(void*);
+ 

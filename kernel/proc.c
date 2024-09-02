@@ -693,3 +693,14 @@ procdump(void)
     printf("\n");
   }
 }
+
+uint getppid(void){
+ struct proc *p = myproc();
+ acquire(&p->lock);
+ int ppid = p->parent ? p->parent->pid : -1;
+ release(&p->lock);
+ return ppid;
+
+}
+
+
