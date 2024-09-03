@@ -1,0 +1,65 @@
+#Implementación de Llamadas al Sistema en xv6
+
+objetivo: Implementar y modificar llamadas al sistema en xv6, un sistema operativo educativo.
+
+## Funcionamiento de las llamadas al sistema.
+
+## Llamada al sisma*tema: getppid(void)
+
+- **Retorna el ID del proceso padre del proceso que la invoca**
+_Primero, modificamos el archivo "proc.c", añadimos el siguiente codigo:
+
+int
+sys_getppid(void)
+{
+  return myproc()->parent->pid; // Retorna el PID del proceso padre
+}
+
+- **Se escribe el numero de llamada al sistema** 
+_se modifica el archivo syscall.h
+
+#define SYS_getppid 22
+
+- **Registrar la llamada al sistema**
+
+_ se modifica el archivo syscall.c, al cual se le agrega en primer lugar:
+extern int sys_getppid(void);
+
+luego;
+
+[SYS_getppid]   sys_getppid,
+
+este se  añade al arreglo ya existente llamado syscalls.
+
+- ** Agregar referencia en usys.pl**
+
+syscall 'getancestor';
+
+_**Agregar referencia a user.h**
+
+int getancestor(int);
+
+**Prueba del programa**
+_Se creo un programa ejecutable llamado yosoytupadre.c.
+
+#include "kernel/types.h"
+#include "user/user.h"
+
+int
+main(void)
+{
+    printf("Mi padre es: %d\n", getppid());
+    exit(0);
+}
+_Editar makefile, agregar codigo:
+
+$U/_yosoytupadre\
+
+##Dificultades encontradas y cómo se resolvieron##
+
+_ Uno de los errores fue que la llamada al sistema sys_getppid en la tabla de llamadas al sistema (syscall.c) tiene un tipo de puntero incompatible. En tu caso, la función sys_getppid está definida con un tipo de retorno int, pero la tabla de llamadas al sistema espera un puntero a una función que retorna uint64.
+
+error: initialization of 'uint64 (*)(void)' {aka 'long unsigned int (*)(void)'} from incompatible pointer type 'int (*)(void)' [-Werror=incompatible-pointer-types]
+  131 | [SYS_getppid] sys_getppid,  
+
+_solucion: modificar la función sys_getppid para que devuelva un uint64 en lugar de un int.
