@@ -5,7 +5,7 @@
 1. **Clonar el Repositorio de xv6:**
     ```bash
     git clone https://github.com/aliturriaga/xv6-riscv.git
-    cd xv6-public
+    cd xv6-riscv
     ```
 
 2. **Crear una Nueva Rama:**
