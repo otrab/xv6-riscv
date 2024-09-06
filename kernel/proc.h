@@ -107,4 +107,4 @@ struct proc {
 };
  
 uint getppid(void);
-int getancestor(int);
+int getancestor(uint64);
