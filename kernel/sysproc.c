@@ -91,3 +91,38 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+uint64 
+sys_getppid(void){
+ struct proc *p = myproc();
+ return p->parent->pid;
+}
+
+
+uint64
+sys_getancestor(void) {
+    int n = 0;
+    argint(0, &n);  // Asignamos el primer argumento de la llamada al sistema a n
+
+    struct proc *p = myproc();
+    if (p == 0) {
+        return -1;  // Si no hay proceso, retornar -1
+    }
+
+    switch(n) {
+        case 0:
+            return p->pid;  // Retornar PID del proceso actual
+        case 1:
+            if (p->parent)
+                return p->parent->pid;  // Retornar PID del padre
+            else
+                return -1;  // No hay padre
+        case 2:
+            if (p->parent && p->parent->parent)
+                return p->parent->parent->pid;  // Retornar PID del abuelo
+            else
+                return -1;  // No hay abuelo
+        default:
+            return -1;  // Para cualquier otro caso, retornar -1
+    }
+}
