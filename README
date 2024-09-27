@@ -6,7 +6,28 @@ Modificar el programador de procesos en xv6 para implementar un sistema de prior
 ## Parte I: Implementación Básica (Nota máxima: 6)
 
 ### Modificaciones Requeridas:
-1. **Incorporar Prioridad:**
+1. **Incorporar Prioridad:**# Tarea 2: Programación de Procesos en xv6
+
+## Objetivo
+Modificar el programador de procesos en xv6 para implementar un sistema de prioridades.
+
+### Modificaciones Requeridas
+1. **Incorporar Prioridad**
+   - Agregar un campo de prioridad.
+   - Inicializar en 0.
+
+2. **Incorporar Boost**
+   - Agregar un campo de boost.
+   - Inicializar en 1.
+
+### Consejos
+- Revisar el código existente.
+- Documentar las modificaciones.
+
+## Entrega
+- Código fuente modificado.
+- Informe detallando las modificaciones.
+
    - Agregar un campo de prioridad a la estructura de proceso.
    - Inicializar la prioridad de cada proceso en 0 (menor número = mayor prioridad).
 
