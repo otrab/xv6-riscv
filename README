@@ -50,4 +50,33 @@ Modificar el programador de procesos en xv6 para implementar un sistema de prior
 2. Realizar cambios y commits en esta rama.
 3. Subir la rama a tu fork en GitHub.
 4. Proporcionar en el buzón de WebCampus:
-   - El enlace a tu rama en GitHub (https://github
+   - El enlace a tu rama en GitHub (https://github.com/tu_usuario/xv6-riscv/tree/nombre_apellido_t2)
+   - Tu informe INFORME.md
+
+## Recursos
+- [Documentación de xv6](https://pdos.csail.mit.edu/6.828/2020/xv6.html)
+- [Libro de xv6 (PDF)](https://pdos.csail.mit.edu/6.828/2020/xv6/book-riscv-rev1.pdf)
+- [Repositorio de xv6 en GitHub](https://github.com/otrab/xv6-riscv)
+
+## Fecha de Entrega
+2 semanas
+
+## Evaluación (Rúbrica)
+
+### Implementación básica (hasta 60 puntos)
+- Correcta implementación de la estructura de prioridad y boost: 40 puntos
+- Programa de prueba y su integración: 20 puntos
+
+### Implementación avanzada (10 puntos adicionales)
+- Correcta implementación de la lógica de prioridades y boost: 10 puntos
+
+### Calidad general (considerado en la puntuación de las implementaciones)
+- Claridad del código y comentarios
+- Calidad de la documentación en INFORME.md
+- Manejo de errores y casos límite
+
+**Total: 70 puntos (máximo)**
+
+*Nota: La calidad general se evalúa como parte de los puntos asignados a las implementaciones, pudiendo influir positiva o negativamente en la puntuación de cada sección.*
+
+¡Buena suerte con tu tarea!
