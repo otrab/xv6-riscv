@@ -1,0 +1,53 @@
+# Tarea 2: Programación de Procesos en xv6
+
+## Objetivo
+Modificar el programador de procesos en xv6 para implementar un sistema de prioridades y un campo de boost en la estructura de proceso.
+
+## Parte I: Implementación Básica (Nota máxima: 6)
+
+### Modificaciones Requeridas:
+1. **Incorporar Prioridad:**
+   - Agregar un campo de prioridad a la estructura de proceso.
+   - Inicializar la prioridad de cada proceso en 0 (menor número = mayor prioridad).
+
+2. **Incorporar Boost:**
+   - Agregar un campo de boost a la estructura de proceso.
+   - Inicializar el boost en 1.
+
+3. **Manejo de Prioridades:**
+   - Cada vez que un proceso ingresa, aumentar la prioridad de todos los procesos existentes que puedan ser ejecutados (excluir procesos zombies).
+   - Implementar la lógica: `Prioridad += Boost`.
+   - Si la prioridad alcanza 9, cambiar el boost a -1.
+   - Si la prioridad llega a 0, cambiar el boost a 1.
+
+## Parte II: Programa de Ejemplo (Para optar a nota 7)
+
+### Crear un programa que:
+- Utilice `fork` para crear al menos 20 procesos.
+- Cada proceso muestre un mensaje en pantalla al ejecutarse, con el formato: “Ejecutando proceso <nombre> <pid>”.
+- Incluya un `sleep` para hacer que los procesos se detengan unos segundos.
+
+## Consejos (Hints)
+- Revisar el código del programador de procesos existente para entender cómo se gestionan los procesos.
+- Asegurarse de que los cambios no afecten negativamente el funcionamiento general del sistema.
+- Documentar adecuadamente las modificaciones realizadas.
+
+## Pruebas
+1. Crear un programa ejecutable que genere procesos y muestre su ejecución.
+2. Agregar este programa a xv6 en la carpeta "user".
+3. Modificar el Makefile para incluir el nuevo programa.
+
+## Entrega
+- Código fuente modificado de xv6.
+- Programa de prueba.
+- Informe (INFORME.md) detallando:
+  - Funcionamiento y lógica del sistema de prioridades.
+  - Explicación de las modificaciones realizadas.
+  - Dificultades encontradas y soluciones implementadas.
+
+## Instrucciones de Entrega
+1. Crear una nueva rama en tu fork de xv6 para esta tarea.
+2. Realizar cambios y commits en esta rama.
+3. Subir la rama a tu fork en GitHub.
+4. Proporcionar en el buzón de WebCampus:
+   - El enlace a tu rama en GitHub (https://github
