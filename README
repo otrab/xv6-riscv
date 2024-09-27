@@ -1,14 +1,6 @@
 # Tarea 2: Programación de Procesos en xv6
 
 ## Objetivo
-Modificar el programador de procesos en xv6 para implementar un sistema de prioridades y un campo de boost en la estructura de proceso.
-
-## Parte I: Implementación Básica (Nota máxima: 6)
-
-### Modificaciones Requeridas:
-1. **Incorporar Prioridad:**# Tarea 2: Programación de Procesos en xv6
-
-## Objetivo
 Modificar el programador de procesos en xv6 para implementar un sistema de prioridades.
 
 ### Modificaciones Requeridas
