@@ -41,7 +41,7 @@ Modificar el programador de procesos en xv6 para implementar un sistema de prior
 ## Entrega
 - Código fuente modificado de xv6.
 - Programa de prueba.
-- Informe (archivo "README") detallando:
+- Informe (archivo "README.md") detallando:
   - Funcionamiento y lógica del sistema de prioridades.
   - Explicación de las modificaciones realizadas.
   - Dificultades encontradas y soluciones implementadas.
