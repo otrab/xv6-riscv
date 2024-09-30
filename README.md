@@ -30,7 +30,7 @@ Modificar el programador de procesos en xv6 para implementar un sistema de prior
 ## Pruebas
 ### Crear un programa que:
 - Utilice `fork` para crear al menos 20 procesos.
-- Cada proceso muestre un mensaje en pantalla al ejecutarse, con el formato: “Ejecutando proceso <nombre> <pid>”.
+- Cada proceso muestre un mensaje en pantalla al ejecutarse, con el formato: “Ejecutando proceso `<nombre>` `<pid>`”.
 - Incluya un `sleep` para hacer que los procesos se detengan unos segundos.
 
 ## Consejos (Hints)
