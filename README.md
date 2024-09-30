@@ -69,7 +69,7 @@ Modificar el programador de procesos en xv6 para implementar un sistema de prior
 - Programa de prueba y su integración: 20 puntos
 
 
-### Calidad general (considerado en la puntuación de las implementaciones) (10 puntos)
+### Calidad general (considerado en la puntuación de las implementaciones)
 - Claridad del código y comentarios
 - Calidad de la documentación en README
 
