@@ -455,6 +455,23 @@ scheduler(void)
     intr_on();
 
     int found = 0;
+   
+    for(p = proc; p < &proc[NPROC]; p++){
+      acquire(&p->lock);
+      if(p->state == RUNNABLE){
+        p->priority += p->boost;
+        if(p->priority >= 9){
+          p->boost =-1;
+          p->priority = 9;
+        } else if(p->priority <= 0){
+          p->boost = 1;
+          p->priority = 0;
+        }
+      }
+      release(&p->lock);
+    }
+
+
     for(p = proc; p < &proc[NPROC]; p++) {
       acquire(&p->lock);
       if(p->state == RUNNABLE) {
