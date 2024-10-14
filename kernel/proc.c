@@ -709,7 +709,7 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
-}
+}      
 
 uint getppid(void){
  struct proc *p = myproc();
@@ -735,7 +735,6 @@ int getancestor(uint64 n){
 
 struct ptable_struct ptable;
 
-// Asumiendo que tienes una estructura proc que tiene campos priority y boost
 
 int set_priority(int pid, int priority) {
     struct proc *p;
@@ -744,11 +743,11 @@ int set_priority(int pid, int priority) {
         if(p->pid == pid) {
             p->priority = priority;
             release(&ptable.lock);
-            return 0;  // Éxito
+            return 0;  
         }
     }
     release(&ptable.lock);
-    return -1;  // PID no encontrado
+    return -1;  
 }
 
 int set_boost(int pid, int boost) {
@@ -758,9 +757,9 @@ int set_boost(int pid, int boost) {
         if(p->pid == pid) {
             p->boost = boost;
             release(&ptable.lock);
-            return 0;  // Éxito
+            return 0;  
         }
     }
     release(&ptable.lock);
-    return -1;  // PID no encontrado
+    return -1;  
 }
