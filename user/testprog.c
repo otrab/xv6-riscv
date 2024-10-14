@@ -44,9 +44,8 @@ int main(void) {
         }
         if(pid == 0) {
 	    sleep(10*(n+1));
-            // Establecer prioridad y boost para cada proceso hijo
-            setpriority(getpid(), 20 - n);  // Prioridades decrecientes
-            setboost(getpid(), n % 2 == 0 ? 1 : -1);  // Boost alternante
+            setpriority(getpid(), 20 - n);
+            setboost(getpid(), n % 2 == 0 ? 1 : -1);
 
             printf("Ejecutando proceso %d con PID %d, prioridad %d, boost %d\n",
                    n, getpid(), 20 - n, n % 2 == 0 ? 1 : -1);
