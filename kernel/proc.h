@@ -108,13 +108,13 @@ struct proc {
   char name[16];               // Process name (debugging)
 };
 
-// Declarar el tipo de estructura
+
 struct ptable_struct {
     struct spinlock lock;
     struct proc proc[NPROC];
 };
 
-// Declarar ptable como externa
+
 extern struct ptable_struct ptable;
 
  
