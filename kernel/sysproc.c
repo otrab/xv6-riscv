@@ -131,26 +131,20 @@ sys_getancestor(void) {
 extern int set_priority(int pid, int priority);
 extern int set_boost(int pid, int boost);
 
-uint64
-sys_setpriority(void) {
+uint64 sys_setpriority(void) {
     int pid, priority;
     
-    // Extrae los argumentos sin comprobar errores aquí
     argint(0, &pid);
     argint(1, &priority);
     
-    // Llamar a la función interna del kernel
     return (uint64)set_priority(pid, priority);
 }
 
-uint64
-sys_setboost(void) {
+uint64 sys_setboost(void) {
     int pid, boost;
     
-    // Extrae los argumentos sin comprobar errores aquí
     argint(0, &pid);
     argint(1, &boost);
     
-    // Llamar a la función interna del kernel
     return (uint64)set_boost(pid, boost);
 }
