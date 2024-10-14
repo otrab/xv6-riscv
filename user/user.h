@@ -24,6 +24,8 @@ int sleep(int);
 int uptime(void);
 int  getppid(void);
 int getancestor(int n);
+extern int setpriority(int pid, int priority);
+extern int setboost(int pid, int boost);
 typedef unsigned int uint;
 
 // ulib.c

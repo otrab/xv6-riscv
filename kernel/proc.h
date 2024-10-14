@@ -107,6 +107,18 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
 };
+
+// Declarar el tipo de estructura
+struct ptable_struct {
+    struct spinlock lock;
+    struct proc proc[NPROC];
+};
+
+// Declarar ptable como externa
+extern struct ptable_struct ptable;
+
  
 uint getppid(void);
 int getancestor(uint64);
+int set_priority(int pid, int priority);
+int set_boost(int pid, int boost);

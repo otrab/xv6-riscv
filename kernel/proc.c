@@ -732,3 +732,35 @@ int getancestor(uint64 n){
   }
   return p->pid;
 }
+
+struct ptable_struct ptable;
+
+// Asumiendo que tienes una estructura proc que tiene campos priority y boost
+
+int set_priority(int pid, int priority) {
+    struct proc *p;
+    acquire(&ptable.lock);
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+        if(p->pid == pid) {
+            p->priority = priority;
+            release(&ptable.lock);
+            return 0;  // Éxito
+        }
+    }
+    release(&ptable.lock);
+    return -1;  // PID no encontrado
+}
+
+int set_boost(int pid, int boost) {
+    struct proc *p;
+    acquire(&ptable.lock);
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+        if(p->pid == pid) {
+            p->boost = boost;
+            release(&ptable.lock);
+            return 0;  // Éxito
+        }
+    }
+    release(&ptable.lock);
+    return -1;  // PID no encontrado
+}
