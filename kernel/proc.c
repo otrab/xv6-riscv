@@ -124,6 +124,8 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
+  p->priority = 0;
+  p->boost = 1;  
 
   // Allocate a trapframe page.
   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
@@ -145,6 +147,25 @@ found:
   memset(&p->context, 0, sizeof(p->context));
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
+
+  //Only if the new procces was successfully created, we can set the priority and boost
+  //printf("CPU(%d) Created %d with priority %d\n", cpuid(), p->pid, p->priority);
+  for (struct proc *p2 = proc; p2 < &proc[NPROC]; p2++) {
+    if (p2 != p) {  // Skip the newly created process
+        acquire(&p2->lock); 
+        if (p2->state == RUNNABLE) { 
+            p2->priority += p2->boost;  
+            //printf("CPU(%d) Updated %d to %d\n", cpuid(), p2->pid, p2->priority);
+            if (p2->priority >= 9) {
+                p2->boost = -1;  
+            }
+            if (p2->priority <= 0) {
+                p2->boost = 1;   
+            }
+        }
+        release(&p2->lock);  
+    }
+}
 
   return p;
 }
@@ -455,23 +476,34 @@ scheduler(void)
     intr_on();
 
     int found = 0;
+    int max_priority = 10;
+    struct proc *chosen_proc = 0;
+
+    // Loop over process table looking for process to run.
     for(p = proc; p < &proc[NPROC]; p++) {
       acquire(&p->lock);
       if(p->state == RUNNABLE) {
-        // Switch to chosen process.  It is the process's job
-        // to release its lock and then reacquire it
-        // before jumping back to us.
-        p->state = RUNNING;
-        c->proc = p;
-        swtch(&c->context, &p->context);
-
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        c->proc = 0;
-        found = 1;
+        //printf("CPU(%d) Candidate %d with priority %d \n",cpuid(), p->pid, p->priority);
+        if (p->priority < max_priority) {
+          max_priority = p->priority;
+          chosen_proc = p;
+        }
       }
       release(&p->lock);
     }
+
+  if (chosen_proc != 0) {
+    acquire(&chosen_proc->lock);
+    if (chosen_proc->state == RUNNABLE) {
+      //printf("CPU(%d) Chosen %d with priority %d \n",cpuid() , chosen_proc->pid, chosen_proc->priority);
+      chosen_proc->state = RUNNING;
+      c->proc = chosen_proc;
+      swtch(&c->context, &chosen_proc->context);
+      c->proc = 0;
+      found = 1;
+    }
+    release(&chosen_proc->lock);
+  }
     if(found == 0) {
       // nothing to run; stop running on this core until an interrupt.
       intr_on();
