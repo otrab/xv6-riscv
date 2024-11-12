@@ -101,14 +101,29 @@ sys_getppid(void)
 uint64
 sys_mprotect(void)
 {
-  return mymproc()->parent->pid;
+    uint64 addr;
+    int len;
+
+    // Argumentos separados de validación de parámetros
+    argaddr(0, &addr);
+    argint(1, &len);
+
+    return mprotect((void *)addr, len);
 }
 
 uint64
 sys_munprotect(void)
 {
-  return myproc()->parent->pid;
+    uint64 addr;
+    int len;
+
+    // Argumentos separados de validación de parámetros
+    argaddr(0, &addr);
+    argint(1, &len);
+
+    return munprotect((void *)addr, len);
 }
+
 
 uint64
 sys_getancestorpid(void)

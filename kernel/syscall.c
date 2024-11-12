@@ -103,6 +103,8 @@ extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
 extern uint64 sys_getppid(void);
 extern uint64 sys_getancestorpid(void);
+extern uint64 sys_mprotect(void);
+extern uint64 sys_munprotect(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
