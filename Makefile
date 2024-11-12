@@ -143,6 +143,7 @@ UPROGS=\
 	$U/_zombie\
 	$U/_clear\
 	$U/_priority_test\
+	$U/_mtest\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

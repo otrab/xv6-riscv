@@ -449,3 +449,16 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
     return -1;
   }
 }
+
+int
+mprotect(void addr, int len)
+{
+  int pages_involved = len / PGSIZE;
+  pte = walk(pagetable, va0, 0);
+}
+
+int
+munprotect(void addr, int len)
+{
+  
+}

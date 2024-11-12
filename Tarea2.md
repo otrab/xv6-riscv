@@ -6,6 +6,7 @@ El sistema de prioridades fue implementado modificando la estructura `proc` para
 El scheduler selecciona el proceso con menor prioridad (mayor urgencia) para ejecutarse.
 
 ## Modificaciones Realizadas
+- Se incluyeron los cambios no abordados en la tarea 1 no entregada.
 - **proc.c**: Se añadieron los campos de prioridad y boost a la estructura `proc`, y la lógica para gestionar estos campos en la función `allocproc()`. El scheduler fue modificado para elegir procesos con base en la prioridad.
 - **proc.h**: Se añadieron los campos `priority` y `boost` a la estructura `proc`.
 - **priority_test.c**: Programa que utiliza `fork()` para crear 20 procesos. Cada proceso muestra un mensaje con su nombre y PID, y su ejecución está escalonada con un retraso de `sleep()` para simular una diferencia de prioridad.

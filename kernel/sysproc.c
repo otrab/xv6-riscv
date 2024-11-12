@@ -99,6 +99,18 @@ sys_getppid(void)
 }
 
 uint64
+sys_mprotect(void)
+{
+  return mymproc()->parent->pid;
+}
+
+uint64
+sys_munprotect(void)
+{
+  return myproc()->parent->pid;
+}
+
+uint64
 sys_getancestorpid(void)
 {
   int n;
