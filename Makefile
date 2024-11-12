@@ -144,6 +144,7 @@ UPROGS=\
 	$U/_clear\
 	$U/_priority_test\
 	$U/_mtest\
+	$U/_muntest\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
