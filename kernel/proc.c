@@ -455,6 +455,23 @@ scheduler(void)
     intr_on();
 
     int found = 0;
+   
+    for(p = proc; p < &proc[NPROC]; p++){
+      acquire(&p->lock);
+      if(p->state == RUNNABLE){
+        p->priority += p->boost;
+        if(p->priority >= 9){
+          p->boost =-1;
+          p->priority = 9;
+        } else if(p->priority <= 0){
+          p->boost = 1;
+          p->priority = 0;
+        }
+      }
+      release(&p->lock);
+    }
+
+
     for(p = proc; p < &proc[NPROC]; p++) {
       acquire(&p->lock);
       if(p->state == RUNNABLE) {
@@ -692,4 +709,57 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}      
+
+uint getppid(void){
+ struct proc *p = myproc();
+ acquire(&p->lock);
+ int ppid = p->parent ? p->parent->pid : -1;
+ release(&p->lock);
+ return ppid;
+
+}
+
+
+int getancestor(uint64 n){
+ struct proc *p = myproc();
+  while (n> 0 && p->parent){
+    p = p->parent;
+    n --;
+  }
+  if (n> 0){
+    return -1;
+  }
+  return p->pid;
+}
+
+struct ptable_struct ptable;
+
+
+int set_priority(int pid, int priority) {
+    struct proc *p;
+    acquire(&ptable.lock);
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+        if(p->pid == pid) {
+            p->priority = priority;
+            release(&ptable.lock);
+            return 0;  
+        }
+    }
+    release(&ptable.lock);
+    return -1;  
+}
+
+int set_boost(int pid, int boost) {
+    struct proc *p;
+    acquire(&ptable.lock);
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+        if(p->pid == pid) {
+            p->boost = boost;
+            release(&ptable.lock);
+            return 0;  
+        }
+    }
+    release(&ptable.lock);
+    return -1;  
 }

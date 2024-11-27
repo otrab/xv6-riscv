@@ -91,6 +91,8 @@ struct proc {
   int killed;                  // If non-zero, have been killed
   int xstate;                  // Exit status to be returned to parent's wait
   int pid;                     // Process ID
+  int priority;
+  int boost;
 
   // wait_lock must be held when using this:
   struct proc *parent;         // Parent process
@@ -105,3 +107,18 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
 };
+
+
+struct ptable_struct {
+    struct spinlock lock;
+    struct proc proc[NPROC];
+};
+
+
+extern struct ptable_struct ptable;
+
+ 
+uint getppid(void);
+int getancestor(uint64);
+int set_priority(int pid, int priority);
+int set_boost(int pid, int boost);
