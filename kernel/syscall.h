@@ -20,3 +20,8 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
+#define SYS_getppid 22
+#define SYS_getancestorpid 23
+#define SYS_mprotect 24  // Ajusta estos valores según el orden actual
+#define SYS_munprotect 25
+#define SYS_chmod 26

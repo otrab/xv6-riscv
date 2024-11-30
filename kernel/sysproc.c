@@ -91,3 +91,54 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+uint64
+sys_getppid(void)
+{
+  return myproc()->parent->pid;
+}
+
+uint64
+sys_mprotect(void)
+{
+    uint64 addr;
+    int len;
+
+    // Argumentos separados de validación de parámetros
+    argaddr(0, &addr);
+    argint(1, &len);
+
+    return mprotect((void *)addr, len);
+}
+
+uint64
+sys_munprotect(void)
+{
+    uint64 addr;
+    int len;
+
+    // Argumentos separados de validación de parámetros
+    argaddr(0, &addr);
+    argint(1, &len);
+
+    return munprotect((void *)addr, len);
+}
+
+
+uint64
+sys_getancestorpid(void)
+{
+  int n;
+  argint(0, &n);
+  struct proc *p = myproc();
+  for(int i = 0; i < n; i++)
+  {
+    if(p->parent == 0)
+    {
+      return -1;
+    } else {
+      p = p->parent;
+    }
+  }
+  return p->pid;
+}

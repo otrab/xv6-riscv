@@ -235,6 +235,7 @@ iupdate(struct inode *ip)
   dip->minor = ip->minor;
   dip->nlink = ip->nlink;
   dip->size = ip->size;
+  dip->perm = ip->perm;
   memmove(dip->addrs, ip->addrs, sizeof(ip->addrs));
   log_write(bp);
   brelse(bp);
@@ -306,6 +307,7 @@ ilock(struct inode *ip)
     ip->type = dip->type;
     ip->major = dip->major;
     ip->minor = dip->minor;
+    ip->perm = dip->perm;
     ip->nlink = dip->nlink;
     ip->size = dip->size;
     memmove(ip->addrs, dip->addrs, sizeof(ip->addrs));

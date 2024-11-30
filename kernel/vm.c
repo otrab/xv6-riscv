@@ -5,6 +5,7 @@
 #include "riscv.h"
 #include "defs.h"
 #include "fs.h"
+#include "proc.h"
 
 /*
  * the kernel's page table.
@@ -448,4 +449,42 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
   } else {
     return -1;
   }
+}
+
+int
+mprotect(void *addr, int len)
+{
+    pagetable_t pagetable = myproc()->pagetable; // Obtener la pagetable del proceso actual
+    uint64 va0 = (uint64)addr; // Dirección virtual inicial
+    int pages_involved = PGROUNDUP(len) / PGSIZE; // Calcular la cantidad de páginas involucradas
+    pte_t *pte;
+
+    for (int i = 0; i < pages_involved; i++) {
+        pte = walk(pagetable, va0, 0); // Obtener la PTE de la dirección actual
+        if (pte == 0) {
+            return -1; // Error si no existe la PTE
+        }
+        *pte &= ~PTE_W; // Deshabilitar el bit de escritura
+        va0 += PGSIZE; // Avanzar a la siguiente página
+    }
+    return 0; // Éxito
+}
+
+int
+munprotect(void *addr, int len)
+{
+    pagetable_t pagetable = myproc()->pagetable; // Obtener la pagetable del proceso actual
+    uint64 va0 = (uint64)addr; // Dirección virtual inicial
+    int pages_involved = PGROUNDUP(len) / PGSIZE; // Calcular la cantidad de páginas involucradas
+    pte_t *pte;
+
+    for (int i = 0; i < pages_involved; i++) {
+        pte = walk(pagetable, va0, 0); // Obtener la PTE de la dirección actual
+        if (pte == 0) {
+            return -1; // Error si no existe la PTE
+        }
+        *pte |= PTE_W; // Habilitar el bit de escritura
+        va0 += PGSIZE; // Avanzar a la siguiente página
+    }
+    return 0; // Éxito
 }

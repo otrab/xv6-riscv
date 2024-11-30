@@ -19,9 +19,12 @@ int mkdir(const char*);
 int chdir(const char*);
 int dup(int);
 int getpid(void);
+int chmod(const char*, int);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int mprotect(void *addr, int len);
+int munprotect(void *addr, int len);
 
 // ulib.c
 int stat(const char*, struct stat*);
