@@ -103,6 +103,7 @@ extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
 extern uint64 sys_getppid(void);
 extern uint64 sys_getancestorpid(void);
+extern uint64 sys_chmod(void);
 extern uint64 sys_mprotect(void);
 extern uint64 sys_munprotect(void);
 
@@ -120,6 +121,7 @@ static uint64 (*syscalls[])(void) = {
 [SYS_chdir]   sys_chdir,
 [SYS_dup]     sys_dup,
 [SYS_getpid]  sys_getpid,
+[SYS_chmod]  sys_chmod,
 [SYS_sbrk]    sys_sbrk,
 [SYS_sleep]   sys_sleep,
 [SYS_uptime]  sys_uptime,

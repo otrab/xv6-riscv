@@ -24,3 +24,4 @@
 #define SYS_getancestorpid 23
 #define SYS_mprotect 24  // Ajusta estos valores según el orden actual
 #define SYS_munprotect 25
+#define SYS_chmod 26

@@ -271,6 +271,7 @@ create(char *path, short type, short major, short minor)
   ip->major = major;
   ip->minor = minor;
   ip->nlink = 1;
+  ip->perm = 3;
   iupdate(ip);
 
   if(type == T_DIR){  // Create . and .. entries.
@@ -357,8 +358,8 @@ sys_open(void)
     f->off = 0;
   }
   f->ip = ip;
-  f->readable = !(omode & O_WRONLY);
-  f->writable = (omode & O_WRONLY) || (omode & O_RDWR);
+  f->readable = ((omode & O_WRONLY) || (omode & O_RDWR)) && ((ip->perm == 3) || (ip->perm == 1) || (ip->perm == 5));
+  f->writable = ((omode & O_WRONLY) || (omode & O_RDWR)) && ((ip->perm == 3) || (ip->perm == 2));
 
   if((omode & O_TRUNC) && ip->type == T_FILE){
     itrunc(ip);
@@ -382,6 +383,44 @@ sys_mkdir(void)
     return -1;
   }
   iunlockput(ip);
+  end_op();
+  return 0;
+}
+
+uint64
+sys_chmod(void)
+{
+  char path[MAXPATH];
+  struct inode *ip;
+  int perm;
+
+  begin_op();
+  argint(1, &perm);
+  if((argstr(0, path, MAXPATH)) < 0){
+    end_op();
+    return -1;
+  }
+
+  if ((perm < 0 || perm > 3) && perm != 5) {
+    end_op();
+    return -1;
+  }
+
+  // usamos la función namei para obtener el inodo
+  if((ip = namei(path)) == 0){
+    end_op();
+    return -1;
+  }
+
+  ilock(ip);
+  if (ip->perm == 5) {
+    iunlock(ip);
+    end_op();
+    return -1;
+  }
+  ip->perm = perm;
+  iupdate(ip);
+  iunlock(ip);
   end_op();
   return 0;
 }

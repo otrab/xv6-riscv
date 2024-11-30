@@ -141,6 +141,7 @@ UPROGS=\
 	$U/_grind\
 	$U/_wc\
 	$U/_zombie\
+	$U/_perm\
 	$U/_clear\
 	$U/_priority_test\
 	$U/_mtest\
