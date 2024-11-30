@@ -1,35 +1,52 @@
-# Tarea 3: Protección de Memoria en xv6
+# Informe de Tarea 4: Implementación de Permisos Básicos en xv6
 
 ## Introducción
 
-En esta tarea, se implementaron las llamadas al sistema `mprotect` y `munprotect` en xv6 para gestionar la protección y desprotección de regiones de memoria. Esto permite cambiar dinámicamente los permisos de páginas de memoria de un proceso, habilitando o deshabilitando la escritura.
+En esta tarea, se ha extendido el sistema operativo xv6 para incorporar un sistema de permisos en los archivos. Los permisos implementados permiten definir archivos como de solo lectura, lectura/escritura y agregar un atributo de inmutabilidad. Estas mejoras brindan un mayor control sobre el acceso y modificación de los archivos en el sistema.
 
-## Implementación
+## Modificaciones Realizadas
 
-Se añadieron las funciones `mprotect` y `munprotect` en `kernel/vm.c` para modificar las tablas de páginas. Se agregaron las entradas correspondientes en `syscall.c` y `sysproc.c` para su uso en espacio de usuario.
+### 1. Estructura del Inode
 
-## Pruebas
+Se añadió un campo `permissions` en la estructura del inode para almacenar los permisos asociados a cada archivo. Este campo utiliza un entero donde:
 
-Para validar la implementación, se diseñaron dos programas:
+- `0`: Sin permisos de lectura ni escritura.
+- `1`: Permiso de lectura.
+- `2`: Permiso de escritura.
+- `3`: Permisos de lectura y escritura.
+- `5`: Archivo inmutable.
 
-### `mtest.c`
+Al crear un nuevo inode, el valor predeterminado de `permissions` se establece en `3` (lectura y escritura).
 
-Este programa reserva una página de memoria, la protege con `mprotect` y luego intenta escribir en ella, generando un fallo de página esperado.
+### 2. Operaciones de Lectura y Escritura
 
-![plot](./mtest.png)
+Se modificaron las funciones de lectura y escritura para que respeten los permisos establecidos en el inode. Por ejemplo, si un archivo está marcado como de solo lectura, las operaciones de escritura son rechazadas adecuadamente.
 
-### `muntest.c`
+### 3. Implementación del Permiso de Inmutabilidad
 
-Este programa reserva una página, primero desprotege la memoria con `munprotect` y confirma que la escritura funciona. Luego, protege la misma página con `mprotect` y vuelve a intentar escribir, generando un fallo.
+Se agregó un permiso especial que, cuando está activo (`permissions` con valor `5`), impide cualquier modificación al archivo, incluso si tiene permisos de escritura. Este permiso también restringe cambios futuros en los permisos del archivo.
 
-![plot](./muntest.png)
+### 4. Nueva Llamada al Sistema: `chmod`
 
-## Resultados
+Se implementó la syscall `chmod` que permite cambiar los permisos de un archivo específico. Esta función verifica que el archivo no sea inmutable antes de modificar sus permisos.
 
-Ambos programas demostraron que las funciones `mprotect` y `munprotect` funcionan correctamente:
-- `mprotect` previene escrituras en memoria protegida.
-- `munprotect` permite deshabilitar esta protección.
+### 5. Actualización de Comandos de Usuario
+
+Se añadió el programa de usuario `perm.c` para probar las funcionalidades de permisos. Este programa crea un archivo, modifica sus permisos y verifica el comportamiento esperado en cada caso.
+
+## Pruebas Realizadas
+
+Se llevaron a cabo pruebas exhaustivas utilizando el programa `perm.c`, el cual realiza las siguientes acciones:
+
+1. Crea un archivo con permisos de lectura y escritura.
+2. Escribe en el archivo y verifica el éxito de la operación.
+3. Cambia los permisos a solo lectura y verifica que la escritura falle.
+4. Restaura los permisos a lectura y escritura y confirma que la escritura sea exitosa.
+5. Establece el permiso de inmutabilidad y verifica que la escritura falle.
+6. Intenta cambiar los permisos de un archivo inmutable y confirma que la operación falle.
+
+Estas pruebas confirmaron que el sistema de permisos funciona según lo esperado.
 
 ## Conclusión
 
-La tarea fue completada con éxito. Las pruebas confirmaron que las funciones manejan adecuadamente los permisos de memoria, generando los fallos esperados al intentar violar las restricciones.
+La implementación del sistema de permisos en xv6 proporciona un control más granular sobre el acceso y modificación de archivos. Las modificaciones realizadas, junto con las pruebas efectuadas, aseguran que el sistema opere de manera estable y segura, respetando las restricciones de permisos establecidas.
