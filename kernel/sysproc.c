@@ -5,7 +5,9 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
-
+#include "sleeplock.h"
+#include "fs.h"
+#include "file.h"
 uint64
 sys_exit(void)
 {
@@ -90,4 +92,34 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+//lógica de chmod
+uint64
+sys_chmod(void)
+{
+    char path[MAXPATH]; 
+    int mode;
+    struct inode *ip;
+
+    argstr(0, path, MAXPATH);
+    argint(1, &mode);
+
+    begin_op();
+    if ((ip = namei(path)) == 0) { 
+        end_op();
+        return -1; 
+    }
+    ilock(ip);
+
+    if (ip->permissions == 5) {
+        iunlockput(ip);
+        end_op();
+        return -1; 
+    }
+
+    ip->permissions = mode;
+    iunlockput(ip);
+    end_op();
+
+    return 0; 
 }

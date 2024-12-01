@@ -20,7 +20,7 @@ struct inode {
   int ref;            // Reference count
   struct sleeplock lock; // protects everything below here
   int valid;          // inode has been read from disk?
-
+  int permissions;
   short type;         // copy of disk inode
   short major;
   short minor;
@@ -38,3 +38,5 @@ struct devsw {
 extern struct devsw devsw[];
 
 #define CONSOLE 1
+
+#define INMUTABLE 5

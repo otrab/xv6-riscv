@@ -72,10 +72,15 @@ sys_read(void)
   int n;
   uint64 p;
 
+  if (argfd(0, 0, &f) < 0)
+    return -1;
+
+  if (f->readable == 0) 
+    return -1;
+
   argaddr(1, &p);
   argint(2, &n);
-  if(argfd(0, 0, &f) < 0)
-    return -1;
+
   return fileread(f, p, n);
 }
 
@@ -85,11 +90,15 @@ sys_write(void)
   struct file *f;
   int n;
   uint64 p;
-  
+
+  if (argfd(0, 0, &f) < 0)
+    return -1;
+
+  if (f->writable == 0) 
+    return -1;
+
   argaddr(1, &p);
   argint(2, &n);
-  if(argfd(0, 0, &f) < 0)
-    return -1;
 
   return filewrite(f, p, n);
 }
@@ -301,6 +310,10 @@ create(char *path, short type, short major, short minor)
   return 0;
 }
 
+
+
+
+
 uint64
 sys_open(void)
 {
@@ -332,6 +345,23 @@ sys_open(void)
       iunlockput(ip);
       end_op();
       return -1;
+    }
+
+    // Verificación de permisos según el modo solicitado
+    if ((omode & O_RDONLY) && (ip->permissions == PERMISSION_NONE || ip->permissions == PERMISSION_WRITE)) {
+        iunlockput(ip);
+        end_op();
+        return -1; 
+    }
+    if ((omode & O_WRONLY) && (ip->permissions == PERMISSION_NONE || ip->permissions == PERMISSION_READ || ip->permissions == PERMISSION_IMMUTABLE)) {
+        iunlockput(ip);
+        end_op();
+        return -1;
+    }
+    if ((omode & O_RDWR) && (ip->permissions == PERMISSION_NONE || ip->permissions == PERMISSION_IMMUTABLE)) {
+        iunlockput(ip);
+        end_op();
+        return -1; 
     }
   }
 
@@ -369,6 +399,9 @@ sys_open(void)
 
   return fd;
 }
+
+
+
 
 uint64
 sys_mkdir(void)
@@ -477,7 +510,7 @@ sys_exec(void)
 uint64
 sys_pipe(void)
 {
-  uint64 fdarray; // user pointer to array of two integers
+  uint64 fdarray; 
   struct file *rf, *wf;
   int fd0, fd1;
   struct proc *p = myproc();
