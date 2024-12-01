@@ -1,5 +1,7 @@
 Implementación de Permisos Básicos en xv6 (RISC-V)
+
 Objetivo:
+
 Implementar un sistema de permisos básicos en xv6 (risc) que permita modificar archivos para tener acceso de solo lectura o lectura/escritura, y agregar un nuevo permiso especial para hacerlo inmutable.
 
 - agregamos al archivo file.h, int permissions;  ,permite guardar los permisos del archivo, indicando si es de solo lectura, escritura, ambos o inmutable.
@@ -126,6 +128,7 @@ $
 Dificultades encontradas y soluciones implementadas.
 
 - uno de los errores que tuve :
+  
 user/test_1.c: In function 'main':
 user/test_1.c:22:20: error: 'PERMISSION_READ' undeclared (first use in this function)
    22 |     chmod(archivo, PERMISSION_READ);
@@ -139,13 +142,16 @@ user/test_1.c:46:20: error: 'PERMISSION_IMMUTABLE' undeclared (first use in this
       |                    ^~~~~~~~~~~~~~~~~~~~
 make: *** [user/test_1.o] Error 1
 
+
 Durante las pruebas con el archivo user/test_1.c, se produjo un error que indicaba que las constantes PERMISSION_READ, PERMISSION_RW y PERMISSION_IMMUTABLE no estaban declaradas.por lo que, se añadieron las siguientes definiciones en el archivo stat.h para establecer los permisos correspondientes:
+
 
 #define PERMISSION_NONE       0
 #define PERMISSION_READ       1
 #define PERMISSION_WRITE      2
 #define PERMISSION_RW         3
 #define PERMISSION_IMMUTABLE  5
+
 
 - Se presentó un error al utilizar las funciones argstr y argint, ya que no se estaba manejando adecuadamente el valor de retorno de estas funciones.
 kernel/sysproc.c:105:38: error: void value not ignored as it ought to be
