@@ -210,10 +210,13 @@ ialloc(uint dev, short type)
       dip->type = type;
       log_write(bp);   // mark it allocated on the disk
       brelse(bp);
-      return iget(dev, inum);
+        struct inode* ip = iget(dev, inum);
+      ip->permissions = 3; 
+      return ip; 
     }
     brelse(bp);
   }
+
   printf("ialloc: no inodes\n");
   return 0;
 }
